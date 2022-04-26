@@ -57,6 +57,7 @@
             		mdl-layout--fixed-header">
             <header class="mdl-layout__header">
                 <div id='header' class="mdl-layout__header-row">
+					<span class="mdl-layout-title">400 environmental recordings (10 classes, 40 clips per class, 5 seconds per clip)</span>
                     <div class="mdl-layout-spacer"></div>
 					<nav class="mdl-navigation">
 						<h6 id="filename"></h6>
@@ -72,7 +73,8 @@
                 </div>
 			</header>
 		        <div class="mdl-layout__drawer" id='drawer'>
-		            <span class="mdl-layout-title">Audio Explorer</span>
+		            <span class="mdl-layout-title">ESC-10 dataset Audio Explorer</span>
+					<!-- <span class="mdl-layout-title">Audio Explorer</span> -->
 	            	<nav class="mdl-navigation">
 
 						<ul class="demo-list-control mdl-list">
@@ -127,33 +129,23 @@
 							</li>
 
 
-							<li class="mdl-list__item">
-								<span class="mdl-list__item-primary-content">
-									PCA
-								</span>
-								<span class="mdl-list__item-secondary-action">
-									<label class="demo-list-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="method-list-option-3">
-										<input type="radio" id="method-list-option-3" class="mdl-radio__button" name="methodoptions" value="pca" oninput="updateGraph()" onchange="updateGraph()" />
-									</label>
-								</span>
-							</li>
+							
 						</ul>
 
 						<div id="sliders">
 							<p style="width:230px">
 								<div class="mdl-card__supporting-text">
-									<p id="slider-text-1">Neighbours</p>
+									<p id="slider-text-1">Neighbours[5, 10, 15, 30, 50]</p>
 								</div>
 								<input class="mdl-slider mdl-js-slider" type="range" id="slider1" min="1" max="5" step="1" oninput="updateGraph()" onchange="updateGraph()">
 								<div class="mdl-card__supporting-text">
-									<p id="slider-text-2">Distances</p>
+									<p id="slider-text-2">Distances[0.000, 0.001, 0.01, 0.1, 0.5]</p>
 								</div>
 								<input class="mdl-slider mdl-js-slider" type="range" id="slider2" min="1" max="5" step="1" oninput="updateGraph()" onchange="updateGraph()">
 							</p>
 						</div>
 
-		            	<a class="mdl-navigation__link" href="https://medium.com/@LeonFedden">Blog</a>
-		            	<a class="mdl-navigation__link" href="https://twitter.com/LeonFedden">Twitter</a>
+		
 	            	</nav>
 		        </div>
 		    <main class="mdl-layout__content">
@@ -181,9 +173,7 @@
 
 			function getData(method, feature, a, b) {
 				var key;
-				if (method.toString() == "pca") {
-					key = method.toString() + feature.toString();
-				} else if (method.toString() == "tsne") {
+				 if (method.toString() == "tsne") {
 					key = method.toString() + feature.toString() + b.toString() + a.toString();
 				} else {
 					key = method.toString() + feature.toString() + a.toString() + b.toString();
@@ -248,15 +238,13 @@
 
 				if (method == "umap") {
 					document.getElementById("sliders").style.visibility = "visible";
-					document.getElementById("slider-text-1").innerHTML = "Neighbours";
-					document.getElementById("slider-text-2").innerHTML = "Distances";
+					document.getElementById("slider-text-1").innerHTML = "Neighbours[5, 10, 15, 30, 50]";
+					document.getElementById("slider-text-2").innerHTML = "Distances[0.000, 0.001, 0.01, 0.1, 0.5]";
 				} else if (method == "tsne") {
 					document.getElementById("sliders").style.visibility = "visible";
-					document.getElementById("slider-text-1").innerHTML = "Perplexity";
-					document.getElementById("slider-text-2").innerHTML = "Iterations";
-				} else if (method == "pca") {
-					document.getElementById("sliders").style.visibility = "hidden";
-				}
+					document.getElementById("slider-text-1").innerHTML = "Perplexity[2, 5, 30, 50, 100]";
+					document.getElementById("slider-text-2").innerHTML = "Iterations[300, 500, 1000, 2000, 5000]";
+				} 
 
 				let targetData = getData(method, feature, slider1, slider2);
 				target = generatePositionsFromData(targetData);
@@ -459,32 +447,9 @@
 						let filepath = filePaths[intersection.index];
 						previousSampleIndex = intersection.index;
 
-						// if (playPromise !== undefined) {
-						// 	playPromise.then(_ => {
-						// 		// Automatic playback started!
-						// 		// Show playing UI.
-						// 		// We can now safely pause video...
-						// 		sound.pause();
-						// 		sound.src = '';
-						// 		sound.load("vengance_dataset/" + filepath);
-						// 		sound.volume = 0.2;
-						// 		playPromise = sound.play();
-						// 	})
-						// 	.catch(error => {
-						// 		// Auto-play was prevented
-						// 		// Show paused UI.
-						// 	});
-						// }
-						//
-						// if (sound == null) {
-						// 	sound = new Audio("vengance_dataset/" + filepath);
-						// }
-						//
-						// sound.volume = 0.2;
-						// var playPromise = sound.play();
 
 						// load a sound and play it immediatly
-						let file = "vengance_dataset/" + filepath;
+						let file = "WAV FILES/" + filepath;
 					    WebAudiox.loadBuffer(context, file, function(buffer){
 					        // init AudioBufferSourceNode
 					        var source  = context.createBufferSource();
